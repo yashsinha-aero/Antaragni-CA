@@ -2,9 +2,11 @@
 
 import React from "react";
 import { motion } from "framer-motion";
+import Image from "next/image";
 import { GridContainer } from "../layout/GridContainer";
 import { VerticalLabel } from "../ui/VerticalLabel";
 import { cn } from "@/lib/utils";
+import { assets } from "@/lib/assets";
 
 const team = [
   { name: "RITVIK MALHOTRA", role: "OVERALL COORDINATOR" },
@@ -15,11 +17,11 @@ const team = [
 ];
 
 const placeholders = [
-  "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?q=80&w=600&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=600&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=600&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?q=80&w=600&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?q=80&w=600&auto=format&fit=crop"
+  assets.contact.gundeep,
+  assets.contact.harsh,
+  assets.contact.vineet,
+  assets.contact.yashasvi,
+  assets.contact.sanchit
 ];
 
 // No spring effects, pure cinematic ease
@@ -87,10 +89,11 @@ function TeamCard({ person, index }: { person: any, index: number }) {
     >
       <div className="relative w-full aspect-[3/4] overflow-hidden bg-[#0a0a0a]">
         <div className="absolute inset-0 shadow-[inset_0_0_60px_rgba(0,0,0,0.8)] pointer-events-none z-10 mix-blend-overlay" />
-        <img 
+        <Image 
           src={placeholders[index]} 
           alt={person.name}
-          className="absolute inset-0 w-full h-full object-cover grayscale contrast-[1.15] brightness-[0.8] transition-all duration-700 ease-out group-hover:scale-[1.03] group-hover:brightness-100"
+          fill
+          className="object-cover grayscale contrast-[1.15] brightness-[0.8] transition-all duration-700 ease-out group-hover:scale-[1.03] group-hover:brightness-100"
         />
       </div>
       <div className="flex flex-col items-center text-center px-1">

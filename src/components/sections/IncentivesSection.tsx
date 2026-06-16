@@ -1,15 +1,17 @@
 "use client";
 
 import { motion } from "framer-motion";
+import Image from "next/image";
 import { EditorialHeading } from "../ui/EditorialHeading";
 import { fadeUp, scrollReveal } from "@/lib/animations";
 import { cn } from "@/lib/utils";
+import { assets } from "@/lib/assets";
 
 export function IncentivesSection() {
   return (
-    <section className="relative w-full flex flex-col py-24 md:py-32 overflow-hidden border-t border-white/5 bg-[#050505]">
+    <section className="relative w-full flex flex-col pt-16 md:pt-24 pb-0 overflow-hidden border-t border-white/5 bg-[#050505]">
       {/* Top-Down Spotlight Effect */}
-      <div className="absolute top-[-20%] left-1/2 -translate-x-1/2 w-[1000px] h-[800px] bg-white/[0.04] blur-[120px] rounded-full mix-blend-screen pointer-events-none" />
+      <div className="absolute top-[-10%] left-1/2 -translate-x-1/2 w-[1200px] h-[800px] bg-[radial-gradient(ellipse_at_center,rgba(255,255,255,0.06)_0%,transparent_60%)] mix-blend-screen pointer-events-none" />
       
       {/* Directional Beam Effect mimicking the reference with subtle shimmer animation */}
       <motion.div 
@@ -21,8 +23,8 @@ export function IncentivesSection() {
       <div className="w-full max-w-[1440px] mx-auto px-6 md:px-10 lg:px-20">
         
         {/* Typography Header Block */}
-        <div className="flex flex-col items-start mb-24 md:mb-32 relative z-10">
-          <EditorialHeading variant="section" className="text-foreground mb-8">
+        <div className="flex flex-col items-start mb-12 md:mb-16 relative z-10">
+          <EditorialHeading variant="section" className="text-foreground mb-6 md:mb-8">
             INCENTIVES
           </EditorialHeading>
           
@@ -35,8 +37,18 @@ export function IncentivesSection() {
         </div>
 
         {/* The Exhibition Showcase (Unified Scene) */}
-        <motion.div 
-          className="relative w-full flex flex-col lg:flex-row items-center lg:items-end justify-center lg:justify-between gap-16 lg:gap-8 pt-10"
+        <div className="relative w-full min-h-[60vh] md:min-h-[70vh] flex flex-col justify-end pt-10 pb-8 md:pb-16 mt-8 md:mt-12">
+          
+          {/* Subtle Showcase Lighting (Behind Products) */}
+          <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[120vw] h-[60vh] bg-[radial-gradient(ellipse_at_bottom,rgba(255,255,255,0.05)_0%,transparent_60%)] z-0 pointer-events-none mix-blend-screen" />
+
+          {/* Shared Base Pedestal */}
+          <div className="absolute bottom-[80px] md:bottom-[120px] left-0 right-0 h-[100px] md:h-[160px] z-0 opacity-80 pointer-events-none">
+             <Image src={assets.incentives.pedestals} alt="Shared Base Pedestals" fill className="object-contain object-bottom" priority />
+          </div>
+
+          <motion.div 
+            className="relative w-full flex flex-col lg:flex-row items-center lg:items-end justify-center lg:justify-between gap-20 lg:gap-8 z-10 px-4 md:px-0"
           initial="hidden"
           whileInView="visible"
           viewport={scrollReveal}
@@ -44,86 +56,73 @@ export function IncentivesSection() {
             hidden: { opacity: 0 },
             visible: {
               opacity: 1,
-              transition: {
-                staggerChildren: 0.12, // 120ms delay as requested
-              }
+              transition: { staggerChildren: 0.15 }
             }
           }}
         >
           
-          {/* 01: Certificate */}
-          <motion.div variants={fadeUp} className="flex flex-col items-center">
+          {/* 01: Certificate (Largest - Left Anchor) */}
+          <motion.div variants={fadeUp} className="flex flex-col items-center flex-1 z-20">
             {/* Object */}
-            <div className="w-[200px] md:w-[240px] h-[280px] md:h-[320px] bg-[#0f0f0f] border border-white/10 rounded-sm shadow-2xl relative z-10 flex items-center justify-center">
-               <span className="text-white/5 text-xs font-serif tracking-widest">CERTIFICATE</span>
+            <div className="w-[280px] md:w-[340px] h-[390px] md:h-[460px] relative flex items-end justify-center pointer-events-none drop-shadow-2xl hover:-translate-y-2 transition-transform duration-500">
+               {/* Contact Shadow */}
+               <div className="absolute -bottom-2 w-[70%] h-[12px] bg-black/80 blur-[8px] rounded-[100%] z-[-1]" />
+               <Image src={assets.incentives.certificate} alt="Certificate" fill className="object-contain object-bottom" priority />
             </div>
-            {/* Pedestal */}
-            <div className="w-[240px] md:w-[280px] h-[30px] md:h-[40px] bg-[#1a1a1a] border border-white/5 shadow-xl -mt-4 relative z-0" />
             {/* Label */}
-            <div className="flex flex-col items-center text-center mt-8">
-              <span className="text-accent font-serif text-[24px] md:text-[28px] mb-3 leading-none">01</span>
+            <div className="flex flex-col items-center text-center mt-6 md:mt-10">
+              <span className="text-accent font-serif text-[28px] md:text-[32px] mb-2 leading-none">01</span>
               <span className="text-muted tracking-[0.15em] text-[10px] md:text-[11px] leading-[1.6] uppercase">
                 CERTIFICATE<br/>OF APPRECIATION
               </span>
             </div>
           </motion.div>
 
-          {/* 02: Pronite Pass */}
-          <motion.div variants={fadeUp} className="flex flex-col items-center">
-            {/* Object (Pass/Badge) */}
-            <div className="w-[110px] md:w-[130px] h-[160px] md:h-[190px] bg-[#0f0f0f] border border-white/10 rounded-sm shadow-2xl relative z-10 flex items-center justify-center">
-              {/* Lanyard strap placeholder */}
-              <div className="absolute -top-16 w-[20px] h-[70px] bg-[#151515] border border-white/5" />
-              <span className="text-white/5 text-[10px] font-serif tracking-widest">PASS</span>
+          {/* 02: Pronite Pass (Medium/Small - Supporting) */}
+          <motion.div variants={fadeUp} className="flex flex-col items-center flex-1 z-10 lg:-ml-8 lg:mb-4">
+            {/* Object */}
+            <div className="w-[150px] md:w-[180px] h-[220px] md:h-[260px] relative flex items-end justify-center pointer-events-none drop-shadow-2xl hover:-translate-y-2 transition-transform duration-500">
+              {/* Contact Shadow */}
+              <div className="absolute -bottom-2 w-[60%] h-[10px] bg-black/80 blur-[6px] rounded-[100%] z-[-1]" />
+              <Image src={assets.incentives.pass} alt="Pronite Pass" fill className="object-contain object-bottom" />
             </div>
-            {/* Pedestal */}
-            <div className="w-[140px] md:w-[170px] h-[30px] md:h-[40px] bg-[#1a1a1a] border border-white/5 shadow-xl -mt-2 relative z-0" />
             {/* Label */}
-            <div className="flex flex-col items-center text-center mt-8">
-              <span className="text-accent font-serif text-[24px] md:text-[28px] mb-3 leading-none">02</span>
+            <div className="flex flex-col items-center text-center mt-6 md:mt-10">
+              <span className="text-accent font-serif text-[28px] md:text-[32px] mb-2 leading-none">02</span>
               <span className="text-muted tracking-[0.15em] text-[10px] md:text-[11px] leading-[1.6] uppercase">
                 PRONITE PASS
               </span>
             </div>
           </motion.div>
 
-          {/* 03: Merchandise (Bottle + Cap) */}
-          <motion.div variants={fadeUp} className="flex flex-col items-center">
+          {/* 03: Merchandise (Second Largest - Center Anchor) */}
+          <motion.div variants={fadeUp} className="flex flex-col items-center flex-1 z-20">
             {/* Object Group */}
-            <div className="relative w-[220px] md:w-[260px] h-[220px] md:h-[260px] flex items-end justify-center z-10">
-              {/* Bottle */}
-              <div className="w-[70px] md:w-[80px] h-[200px] md:h-[240px] bg-[#0f0f0f] border border-white/10 rounded-t-xl shadow-2xl absolute left-4 md:left-8 bottom-0 flex items-center justify-center">
-                <span className="text-white/5 text-[10px] font-serif tracking-widest rotate-90">BOTTLE</span>
-              </div>
-              {/* Cap */}
-              <div className="w-[120px] md:w-[140px] h-[70px] md:h-[80px] bg-[#131313] border border-white/10 rounded-t-full shadow-2xl absolute right-0 bottom-0 z-20 flex items-center justify-center">
-                 <span className="text-white/5 text-[10px] font-serif tracking-widest">CAP</span>
-              </div>
+            <div className="w-[300px] md:w-[380px] h-[300px] md:h-[380px] relative flex items-end justify-center pointer-events-none drop-shadow-2xl hover:-translate-y-2 transition-transform duration-500">
+               {/* Contact Shadow */}
+               <div className="absolute -bottom-3 w-[80%] h-[16px] bg-black/80 blur-[10px] rounded-[100%] z-[-1]" />
+               <Image src={assets.incentives.merchandise} alt="Merchandise" fill className="object-contain object-bottom" />
             </div>
-            {/* Pedestal */}
-            <div className="w-[240px] md:w-[280px] h-[30px] md:h-[40px] bg-[#1a1a1a] border border-white/5 shadow-xl -mt-4 relative z-0" />
             {/* Label */}
-            <div className="flex flex-col items-center text-center mt-8">
-              <span className="text-accent font-serif text-[24px] md:text-[28px] mb-3 leading-none">03</span>
+            <div className="flex flex-col items-center text-center mt-6 md:mt-10">
+              <span className="text-accent font-serif text-[28px] md:text-[32px] mb-2 leading-none">03</span>
               <span className="text-muted tracking-[0.15em] text-[10px] md:text-[11px] leading-[1.6] uppercase">
                 MERCHANDISE
               </span>
             </div>
           </motion.div>
 
-          {/* 04: Opportunities (Envelope/Box) */}
-          <motion.div variants={fadeUp} className="flex flex-col items-center">
+          {/* 04: Opportunities (Medium - Supporting) */}
+          <motion.div variants={fadeUp} className="flex flex-col items-center flex-1 z-10 lg:-mr-4 lg:mb-2">
             {/* Object */}
-            <div className="w-[220px] md:w-[260px] h-[160px] md:h-[190px] bg-[#0f0f0f] border border-white/10 rounded-sm shadow-2xl relative z-10 flex items-center justify-center overflow-hidden">
-               {/* Envelope V shape placeholder */}
-               <div className="absolute top-0 w-full h-[120px] border-b border-white/5 bg-[#131313]" style={{ clipPath: 'polygon(0 0, 100% 0, 50% 100%)' }} />
-               <div className="absolute w-[30px] h-[30px] bg-accent/20 border border-accent rounded-full shadow-lg" />
+            <div className="w-[280px] md:w-[340px] h-[200px] md:h-[240px] relative flex items-end justify-center pointer-events-none drop-shadow-2xl hover:-translate-y-2 transition-transform duration-500">
+               {/* Contact Shadow */}
+               <div className="absolute -bottom-2 w-[85%] h-[12px] bg-black/80 blur-[8px] rounded-[100%] z-[-1]" />
+               <Image src={assets.incentives.opportunities} alt="Opportunities" fill className="object-contain object-bottom" />
             </div>
-            {/* Pedestal */}
-            <div className="w-[240px] md:w-[280px] h-[30px] md:h-[40px] bg-[#1a1a1a] border border-white/5 shadow-xl -mt-4 relative z-0" />
             {/* Label */}
-            <div className="flex flex-col items-center text-center mt-8">
-              <span className="text-accent font-serif text-[24px] md:text-[28px] mb-3 leading-none">04</span>
+            <div className="flex flex-col items-center text-center mt-6 md:mt-10">
+              <span className="text-accent font-serif text-[28px] md:text-[32px] mb-2 leading-none">04</span>
               <span className="text-muted tracking-[0.15em] text-[10px] md:text-[11px] leading-[1.6] uppercase">
                 OPPORTUNITIES
               </span>
@@ -131,6 +130,7 @@ export function IncentivesSection() {
           </motion.div>
 
         </motion.div>
+        </div>
       </div>
     </section>
   );

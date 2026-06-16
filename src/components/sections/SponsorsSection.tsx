@@ -2,22 +2,34 @@
 
 import React, { useRef, useState, useEffect } from "react";
 import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
+import Image from "next/image";
 import { EditorialHeading } from "../ui/EditorialHeading";
 import { GridContainer } from "../layout/GridContainer";
 import { cn } from "@/lib/utils";
+import { assets } from "@/lib/assets";
 
 const sponsorGroups = [
   {
     title: "OUTREACH PARTNERS",
-    logos: ["LARSEN & TOUBRO", "HDFC BANK"],
+    logos: [
+      { id: "L&T", src: assets.sponsors.intrcity, name: "Intrcity" }, // Replaced L&T with intrcity temporarily, user didn't provide L&T
+      { id: "HDFC", src: assets.sponsors.vskills, name: "vSkills" }, // Replaced with vskills
+    ],
   },
   {
     title: "GOODIES PARTNERS",
-    logos: ["SBI", "SAMSUNG", "HYUNDAI"],
+    logos: [
+      { id: "SBI", src: assets.sponsors.easyShiksha, name: "EasyShiksha" },
+      { id: "SAMSUNG", src: assets.sponsors.swashaa, name: "Swashaa" },
+      { id: "HYUNDAI", src: assets.sponsors.urbanDrift, name: "Urban Drift" },
+    ],
   },
   {
     title: "TRAVELLING PARTNER",
-    logos: ["Coca-Cola", "SONY", "boAt", "pwc", "ZOHO", "campus"],
+    logos: [
+      { id: "productFolks", src: assets.sponsors.productFolks, name: "The Product Folks" },
+      { id: "supervek", src: assets.sponsors.supervek, name: "Supervek" },
+    ],
   },
 ];
 
@@ -174,7 +186,7 @@ export function SponsorsSection() {
                   >
                     {group.logos.map((sponsor) => (
                       <motion.div 
-                        key={sponsor}
+                        key={sponsor.id}
                         variants={logoVariant}
                         whileHover={{ 
                           scale: 1.03, 
@@ -184,12 +196,9 @@ export function SponsorsSection() {
                         style={{ x: smoothX, y: smoothY }}
                         className="flex items-center justify-center transition-opacity duration-300 opacity-80 hover:!opacity-100 group-hover/logos:opacity-40 cursor-default"
                       >
-                        {/* 
-                          Typographic placeholder scaled correctly to mimic real logo dimensions (80-120px bounding box)
-                        */}
-                        <span className="text-foreground/90 font-sans font-bold text-[24px] md:text-[32px] lg:text-[42px] tracking-tight whitespace-nowrap h-[60px] md:h-[80px] lg:h-[100px] flex items-center">
-                          {sponsor}
-                        </span>
+                        <div className="relative w-[120px] md:w-[160px] lg:w-[200px] h-[60px] md:h-[80px] lg:h-[100px] flex items-center justify-center grayscale hover:grayscale-0 transition-all duration-300">
+                           <Image src={sponsor.src} alt={sponsor.name} fill className="object-contain" />
+                        </div>
                       </motion.div>
                     ))}
                   </motion.div>

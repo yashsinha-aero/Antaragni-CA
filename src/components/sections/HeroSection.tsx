@@ -1,12 +1,14 @@
 "use client";
 
 import { motion, useScroll, useTransform } from "framer-motion";
+import Image from "next/image";
 import { EditorialHeading } from "../ui/EditorialHeading";
 import { EditorialSubheading } from "../ui/EditorialSubheading";
 import { VerticalLabel } from "../ui/VerticalLabel";
 import { StatisticBlock } from "../ui/StatisticBlock";
 import { GridContainer } from "../layout/GridContainer";
 import { fadeUp, fadeIn, staggerContainer, EASING } from "@/lib/animations";
+import { assets } from "@/lib/assets";
 
 export function HeroSection() {
   const { scrollY } = useScroll();
@@ -14,11 +16,13 @@ export function HeroSection() {
 
   return (
     <section className="relative w-full min-h-[calc(100vh-80px)] flex flex-col pt-12 md:pt-20 pb-20 overflow-hidden">
-      {/* Background Volumetric Spotlight Placeholder */}
+      {/* Background Volumetric Spotlight */}
       <motion.div 
-        className="absolute top-[40%] right-[20%] w-[800px] h-[800px] bg-white opacity-[0.05] blur-[100px] rounded-full pointer-events-none mix-blend-screen" 
+        className="absolute top-[40%] right-[20%] w-[800px] h-[800px] opacity-[0.05] pointer-events-none mix-blend-screen" 
         style={{ y: archY }}
-      />
+      >
+        <Image src={assets.textures.spotlight} alt="spotlight" fill className="object-contain" priority />
+      </motion.div>
       
       <GridContainer className="flex-grow relative z-10 items-center">
         {/* Left Side: Typography */}
@@ -59,12 +63,14 @@ export function HeroSection() {
         {/* Right Side: Stats */}
         <div className="col-span-1 md:col-span-3 lg:col-span-4 flex flex-col justify-center relative mt-16 md:mt-0">
           
-          {/* Silhouette Image Placeholder */}
-          <div className="absolute inset-0 flex items-center justify-center opacity-40 pointer-events-none -z-10 -ml-20">
+          {/* Silhouette Image */}
+          <div className="absolute inset-0 flex items-center justify-center opacity-40 pointer-events-none -z-10 -ml-20 mt-10">
             <motion.div 
-              className="w-[200px] h-[600px] bg-black rounded-t-[100px]" 
-              style={{ boxShadow: "0 -20px 100px rgba(255,255,255,0.1)", y: archY }}
-            />
+              className="relative w-[460px] h-[920px]" 
+              style={{ y: archY }}
+            >
+              <Image src={assets.hero.silhouette} alt="silhouette" fill className="object-contain" priority />
+            </motion.div>
           </div>
 
           {/* Statistics Block */}

@@ -1,12 +1,14 @@
 "use client";
 
 import { motion } from "framer-motion";
+import Image from "next/image";
 import { EditorialHeading } from "../ui/EditorialHeading";
 import { BodyText } from "../ui/BodyText";
 import { MetadataLabel } from "../ui/MetadataLabel";
 import { StatisticBlock } from "../ui/StatisticBlock";
 import { GridContainer } from "../layout/GridContainer";
 import { fadeUp, staggerContainer, revealMaskBottom, scrollReveal, EASING } from "@/lib/animations";
+import { assets } from "@/lib/assets";
 
 export function SpiritSection() {
   return (
@@ -51,9 +53,9 @@ export function SpiritSection() {
           {/* Volumetric Spotlight mimicking the stage lights */}
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-white opacity-[0.06] blur-[100px] rounded-full pointer-events-none mix-blend-screen" />
           
-          {/* Structure block representing the silhouette */}
+          {/* Hero Image Area */}
           <motion.div 
-            className="relative w-full h-full max-h-[600px] bg-black/40 border border-white/5 rounded-sm overflow-hidden flex items-end justify-center pb-0 origin-center"
+            className="relative w-full h-full max-h-[600px] bg-black/40 border border-white/5 overflow-hidden flex items-end justify-center origin-center"
             variants={revealMaskBottom}
             initial="hidden"
             whileInView="visible"
@@ -61,10 +63,7 @@ export function SpiritSection() {
             whileHover={{ scale: 1.02 }}
             transition={{ ease: EASING, duration: 1.2 }}
           >
-             <div className="w-[180px] h-[300px] bg-black rounded-t-[100px] z-10" style={{ boxShadow: "0 -30px 100px rgba(255,255,255,0.05)" }}></div>
-             <div className="absolute bottom-10 left-1/2 -translate-x-1/2 text-white/10 font-serif text-[64px] tracking-widest uppercase whitespace-nowrap pointer-events-none select-none">
-                ANTARAGNI
-             </div>
+             <Image src={assets.spirit.crowd} alt="Spirit of Antaragni Crowd" fill className="object-cover" />
           </motion.div>
         </div>
       </GridContainer>

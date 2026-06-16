@@ -5,6 +5,8 @@ import { motion, AnimatePresence } from "framer-motion";
 import { EditorialHeading } from "../ui/EditorialHeading";
 import { GridContainer } from "../layout/GridContainer";
 import { cn } from "@/lib/utils";
+import Image from "next/image";
+import { assets } from "@/lib/assets";
 
 const faqData = [
   {
@@ -87,7 +89,9 @@ export function FAQSection() {
   return (
     <section className="relative w-full flex flex-col pt-24 pb-32 bg-black overflow-hidden border-t border-white/5">
       {/* Background Volumetric Spotlight */}
-      <div className="absolute top-[0%] left-[30%] w-[1000px] h-[1000px] bg-white opacity-[0.03] blur-[120px] rounded-full pointer-events-none mix-blend-screen animate-pulse duration-[10000ms]" />
+      <div className="absolute top-[-20%] left-[-10%] w-[800px] h-[800px] opacity-[0.25] pointer-events-none mix-blend-screen origin-top-left rotate-[-15deg]">
+        <Image src={assets.textures.spotlight} alt="spotlight" fill className="object-contain" priority />
+      </div>
 
       <GridContainer className="relative z-10">
         

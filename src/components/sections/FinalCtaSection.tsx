@@ -2,6 +2,8 @@
 
 import React, { useRef } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
+import Image from "next/image";
+import { assets } from "@/lib/assets";
 
 const easeOut = [0.25, 0.1, 0.25, 1];
 
@@ -72,18 +74,21 @@ export function FinalCtaSection() {
           style={{ y: parallaxY }}
         >
           {/* Overlays for dark cinematic grading */}
-          <div className="absolute inset-0 bg-black/50 z-10 mix-blend-multiply" />
-          <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent z-10" />
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_0%,black_100%)] z-10 opacity-90" />
+          <div className="absolute inset-0 bg-black/40 z-0 mix-blend-multiply" />
+          
+          <Image 
+            src={assets.cta.silhouette} 
+            alt="Silhouette"
+            fill
+            className="object-contain object-bottom opacity-90 z-10 grayscale contrast-125 brightness-75"
+            priority
+          />
+
+          <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent z-10 pointer-events-none" />
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_0%,black_100%)] z-10 opacity-70 pointer-events-none" />
           
           {/* Film Grain */}
-          <div className="absolute inset-0 opacity-[0.03] mix-blend-screen z-20" style={{ backgroundImage: "url('https://grainy-gradients.vercel.app/noise.svg')" }} />
-          
-          <img 
-            src="https://images.unsplash.com/photo-1549490349-8643362247b5?q=80&w=1200&auto=format&fit=crop" 
-            alt="Silhouette"
-            className="w-full h-full object-cover object-bottom opacity-60 grayscale contrast-125 brightness-75"
-          />
+          <div className="absolute inset-0 opacity-[0.03] mix-blend-screen z-20 pointer-events-none" style={{ backgroundImage: `url(${assets.textures.filmGrain})` }} />
         </motion.div>
       </div>
 
@@ -121,8 +126,8 @@ export function FinalCtaSection() {
             variants={fadeUpVariant}
             className="col-span-1 flex flex-col text-center md:text-left text-[10px] md:text-xs tracking-[0.2em] leading-[2.2] uppercase text-muted order-2 md:order-1 w-full"
           >
-            <span>THIS ISN'T JUST A ROLE.</span>
-            <span className="text-accent font-medium mt-1 drop-shadow-md">IT'S YOUR STAGE.</span>
+            <span>THIS ISN&apos;T JUST A ROLE.</span>
+            <span className="text-accent font-medium mt-1 drop-shadow-md">IT&apos;S YOUR STAGE.</span>
           </motion.div>
 
           {/* CTA Button (6th) */}
