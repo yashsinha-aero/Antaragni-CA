@@ -1,22 +1,71 @@
 "use client";
 
-import { motion } from "framer-motion";
-import Image from "next/image";
+import { useRef, useEffect } from "react";
 import { EditorialHeading } from "../ui/EditorialHeading";
-import { fadeUp, scrollReveal } from "@/lib/animations";
-import { cn } from "@/lib/utils";
 import { assets } from "@/lib/assets";
 
 export function IncentivesSection() {
+  const spotlightRef = useRef<HTMLDivElement>(null);
+  const stageAreaRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    // 1. Spotlight Tracking System (Lerp)
+    let requestRef: number;
+    let mouseX = window.innerWidth / 2;
+    let currentOffsetX = 0;
+
+    const handlePointerMove = (e: PointerEvent) => {
+      mouseX = e.clientX;
+    };
+
+    const tick = () => {
+      if (spotlightRef.current) {
+        const halfW = window.innerWidth / 2;
+        const targetOffsetX = mouseX - halfW;
+        currentOffsetX += (targetOffsetX - currentOffsetX) * 0.14;
+        spotlightRef.current.style.transform = `translateX(${currentOffsetX}px)`;
+      }
+      requestRef = requestAnimationFrame(tick);
+    };
+
+    window.addEventListener("pointermove", handlePointerMove);
+    requestRef = requestAnimationFrame(tick);
+
+    // 2. Standalone Intro Animation
+    if (stageAreaRef.current) {
+      const items = stageAreaRef.current.querySelectorAll('.item-column') as NodeListOf<HTMLElement>;
+      items.forEach((item, i) => {
+        item.style.opacity  = '0';
+        item.style.transform = 'translateY(55px)';
+        item.style.transition = 
+          `opacity 0.95s ${0.55 + i * 0.14}s cubic-bezier(0.16, 1, 0.3, 1),
+           transform 0.95s ${0.55 + i * 0.14}s cubic-bezier(0.16, 1, 0.3, 1)`;
+
+        requestAnimationFrame(() => requestAnimationFrame(() => {
+          item.style.opacity   = '1';
+          item.style.transform = 'translateY(0)';
+        }));
+      });
+    }
+
+    return () => {
+      cancelAnimationFrame(requestRef);
+      window.removeEventListener("pointermove", handlePointerMove);
+    };
+  }, []);
+
   return (
-    <section className="relative w-full flex flex-col pt-16 md:pt-24 pb-12 overflow-hidden border-t border-white/5 bg-[#050505]">
-      {/* Ambient background glow */}
+    <section className="relative w-full flex flex-col pt-16 md:pt-24 pb-12 overflow-hidden border-t border-white/5 bg-[#050505] min-h-[90vh]">
+      {/* Background glow */}
       <div className="absolute inset-0 bg-[#050505] -z-10" />
 
-      <div className="w-full max-w-[1440px] mx-auto px-6 md:px-10 lg:px-16">
+      {/* Spotlight Overlay */}
+      <div ref={spotlightRef} className="spotlight-overlay" />
+
+      <div className="w-full max-w-[1440px] mx-auto px-6 md:px-10 lg:px-16 flex flex-col flex-1 relative z-10">
         
-        {/* Typography Header Block */}
-        <div className="flex flex-col items-start mb-6 md:mb-12 relative z-10">
+        {/* Typography Header Block (kept exact previous typography structure) */}
+        <div className="flex flex-col items-start mb-6 md:mb-12 relative z-10 flex-shrink-0">
           <EditorialHeading variant="section" className="text-foreground mb-4 md:mb-6">
             INCENTIVES
           </EditorialHeading>
@@ -29,119 +78,84 @@ export function IncentivesSection() {
           </div>
         </div>
 
-        {/* The Exhibition Showcase (Perfect Absolute Compositing) */}
-        <div className="relative w-full mt-4 md:mt-8 mb-24 md:mb-40 max-w-[1200px] mx-auto">
-          
-          {/* Base Pedestals - Drives the responsive height of the entire showcase */}
-          <div className="w-full opacity-[0.9] brightness-[0.8] z-0">
-             <Image src={assets.incentives.pedestals} alt="Exhibition Platforms" width={1536} height={1024} className="w-full h-auto drop-shadow-2xl" priority />
-          </div>
+        {/* The Exhibition Showcase (Standalone Port) */}
+        <div className="stage-wrapper mt-auto">
+          <div className="stage-container">
+            {/* Pedestal Base */}
+            <img 
+              src={assets.incentives.pedestals} 
+              alt="Exhibition Platforms" 
+              className="stage-base drop-shadow-2xl opacity-90 brightness-[0.85]" 
+            />
 
-          {/* Absolute 3D Overlay - Maps exactly to the 4 pedestal blocks in the image */}
-          <div className="absolute top-0 left-0 w-full h-full z-10 pointer-events-none">
-            
-            {/* 01: Certificate */}
-            <motion.div variants={fadeUp} className="absolute w-[24%] md:w-[18%] left-[21%] bottom-[43%] md:bottom-[41%] -translate-x-1/2 flex flex-col items-center group pointer-events-auto">
+            {/* Stage Area */}
+            <div className="stage-area" ref={stageAreaRef}>
               
-              {/* Fixed Floor Shadow */}
-              <div className="absolute bottom-[2%] left-1/2 -translate-x-1/2 w-[55%] h-[4px] bg-black/95 blur-[2px] rounded-[100%] z-0" />
-              <div className="absolute bottom-[2%] left-1/2 -translate-x-1/2 w-[30%] h-[1px] bg-black blur-[0.5px] rounded-[100%] z-0" />
-
-              {/* Translating Image */}
-              <div className="w-full relative z-10 transition-transform duration-500 group-hover:-translate-y-4">
-                 <Image 
-                   src={assets.incentives.certificate} 
-                   alt="Certificate" 
-                   width={1024} height={1536} 
-                   className="w-full h-auto scale-[0.95] md:scale-[1.0] origin-bottom translate-y-[1%] md:translate-y-[0%] translate-x-[1%]" 
-                   priority 
-                 />
+              {/* 01: Certificate */}
+              <div className="item-column">
+                <div className="item-img-wrap">
+                  <img 
+                    src={assets.incentives.certificate} 
+                    alt="Certificate" 
+                    className="item-img"
+                    style={{ height: "100%" }}
+                  />
+                </div>
+                <div className="item-label">
+                  <span className="item-number text-accent">01</span>
+                  <span className="item-name text-white/70">CERTIFICATE</span>
+                </div>
               </div>
 
-              {/* Museum Placard on Pedestal Face */}
-              <div className="absolute top-[100%] mt-8 md:mt-14 flex flex-col items-center text-center w-[150%] z-20">
-                <span className="text-accent font-serif text-[20px] md:text-[26px] mb-1 leading-none drop-shadow-[0_2px_4px_rgba(0,0,0,1)]">01</span>
-                <span className="text-white/70 tracking-[0.15em] text-[8px] md:text-[9px] leading-[1.6] uppercase drop-shadow-[0_2px_4px_rgba(0,0,0,1)]">CERTIFICATE<br/>OF APPRECIATION</span>
-              </div>
-            </motion.div>
-
-            {/* 02: Pronite Pass */}
-            <motion.div variants={fadeUp} className="absolute w-[18%] md:w-[13%] left-[41%] bottom-[43%] md:bottom-[41%] -translate-x-1/2 flex flex-col items-center group pointer-events-auto z-10">
-              
-              {/* Fixed Floor Shadow */}
-              <div className="absolute bottom-[2%] left-1/2 -translate-x-1/2 w-[45%] h-[3px] bg-black/95 blur-[1.5px] rounded-[100%] z-0" />
-              <div className="absolute bottom-[2%] left-1/2 -translate-x-1/2 w-[20%] h-[1px] bg-black blur-[0.5px] rounded-[100%] z-0" />
-
-              {/* Translating Image */}
-              <div className="w-full relative z-10 transition-transform duration-500 group-hover:-translate-y-4">
-                 <Image 
-                   src={assets.incentives.pass} 
-                   alt="Pronite Pass" 
-                   width={1024} height={1536} 
-                   // Pulled down heavily to ground the transparent card base
-                   className="w-full h-auto scale-[1.4] md:scale-[1.5] origin-bottom translate-y-[26%] md:translate-y-[28%] translate-x-[-1%]" 
-                   priority 
-                 />
+              {/* 02: Pronite Pass */}
+              <div className="item-column">
+                <div className="item-img-wrap">
+                  <img 
+                    src={assets.incentives.pass} 
+                    alt="Pronite Pass" 
+                    className="item-img"
+                    style={{ height: "72%" }}
+                  />
+                </div>
+                <div className="item-label">
+                  <span className="item-number text-accent">02</span>
+                  <span className="item-name text-white/70">PRONITE PASS</span>
+                </div>
               </div>
 
-              {/* Museum Placard on Pedestal Face */}
-              <div className="absolute top-[100%] mt-8 md:mt-14 flex flex-col items-center text-center w-[150%] z-20">
-                <span className="text-accent font-serif text-[20px] md:text-[26px] mb-1 leading-none drop-shadow-[0_2px_4px_rgba(0,0,0,1)]">02</span>
-                <span className="text-white/70 tracking-[0.15em] text-[8px] md:text-[9px] leading-[1.6] uppercase drop-shadow-[0_2px_4px_rgba(0,0,0,1)]">PRONITE PASS</span>
-              </div>
-            </motion.div>
-
-            {/* 03: Merchandise (Hero Anchor) */}
-            <motion.div variants={fadeUp} className="absolute w-[30%] md:w-[28%] left-[60%] bottom-[43%] md:bottom-[41%] -translate-x-1/2 flex flex-col items-center group pointer-events-auto z-20">
-              
-              {/* Fixed Floor Shadow */}
-              <div className="absolute bottom-[2%] left-1/2 -translate-x-1/2 w-[70%] h-[6px] bg-black/95 blur-[3px] rounded-[100%] z-0" />
-              <div className="absolute bottom-[2%] left-1/2 -translate-x-1/2 w-[35%] h-[2px] bg-black blur-[1px] rounded-[100%] z-0" />
-
-              {/* Translating Image */}
-              <div className="w-full relative z-10 transition-transform duration-500 group-hover:-translate-y-4">
-                 <Image 
-                   src={assets.incentives.merchandise} 
-                   alt="Merchandise" 
-                   width={1024} height={1536} 
-                   // Shifted right so the bottle is perfectly centered, scaling massive
-                   className="w-full h-auto scale-[1.2] md:scale-[1.25] origin-bottom translate-x-[7%] md:translate-x-[9%] translate-y-[-1%] md:translate-y-[-2%]" 
-                   priority 
-                 />
+              {/* 03: Merchandise */}
+              <div className="item-column">
+                <div className="item-img-wrap">
+                  <img 
+                    src={assets.incentives.merchandise} 
+                    alt="Merchandise" 
+                    className="item-img"
+                    style={{ height: "105%" }}
+                  />
+                </div>
+                <div className="item-label">
+                  <span className="item-number text-accent">03</span>
+                  <span className="item-name text-white/70">MERCHANDISE</span>
+                </div>
               </div>
 
-              {/* Museum Placard on Pedestal Face */}
-              <div className="absolute top-[100%] mt-8 md:mt-14 flex flex-col items-center text-center w-[120%] z-20">
-                <span className="text-accent font-serif text-[20px] md:text-[26px] mb-1 leading-none drop-shadow-[0_2px_4px_rgba(0,0,0,1)]">03</span>
-                <span className="text-white/70 tracking-[0.15em] text-[8px] md:text-[9px] leading-[1.6] uppercase drop-shadow-[0_2px_4px_rgba(0,0,0,1)]">MERCHANDISE</span>
-              </div>
-            </motion.div>
-
-            {/* 04: Opportunities */}
-            <motion.div variants={fadeUp} className="absolute w-[24%] md:w-[18%] left-[80%] bottom-[43%] md:bottom-[41%] -translate-x-1/2 flex flex-col items-center group pointer-events-auto">
-              
-              {/* Fixed Floor Shadow */}
-              <div className="absolute bottom-[2%] left-1/2 -translate-x-1/2 w-[55%] h-[4px] bg-black/95 blur-[2px] rounded-[100%] z-0" />
-              <div className="absolute bottom-[2%] left-1/2 -translate-x-1/2 w-[30%] h-[1px] bg-black blur-[0.5px] rounded-[100%] z-0" />
-
-              {/* Translating Image */}
-              <div className="w-full relative z-10 transition-transform duration-500 group-hover:-translate-y-4">
-                 <Image 
-                   src={assets.incentives.opportunities} 
-                   alt="Opportunities" 
-                   width={1024} height={1536} 
-                   className="w-full h-auto scale-[1.35] md:scale-[1.45] origin-bottom translate-y-[0%] md:translate-y-[-1%] translate-x-[-1%]" 
-                   priority 
-                 />
+              {/* 04: Opportunities */}
+              <div className="item-column">
+                <div className="item-img-wrap">
+                  <img 
+                    src={assets.incentives.opportunities} 
+                    alt="Opportunities" 
+                    className="item-img"
+                    style={{ height: "82%" }}
+                  />
+                </div>
+                <div className="item-label">
+                  <span className="item-number text-accent">04</span>
+                  <span className="item-name text-white/70">OPPORTUNITIES</span>
+                </div>
               </div>
 
-              {/* Museum Placard on Pedestal Face */}
-              <div className="absolute top-[100%] mt-8 md:mt-14 flex flex-col items-center text-center w-[150%] z-20">
-                <span className="text-accent font-serif text-[20px] md:text-[26px] mb-1 leading-none drop-shadow-[0_2px_4px_rgba(0,0,0,1)]">04</span>
-                <span className="text-white/70 tracking-[0.15em] text-[8px] md:text-[9px] leading-[1.6] uppercase drop-shadow-[0_2px_4px_rgba(0,0,0,1)]">OPPORTUNITIES</span>
-              </div>
-            </motion.div>
-
+            </div>
           </div>
         </div>
       </div>
