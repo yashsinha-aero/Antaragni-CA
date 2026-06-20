@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { NavigationLink } from "../ui/NavigationLink";
 
 export function Navbar() {
@@ -45,6 +46,12 @@ export function Navbar() {
             {link.label}
           </NavigationLink>
         ))}
+        <Link 
+          href="/dashboard" 
+          className="bg-accent text-white px-6 py-2 rounded-full font-sans font-medium text-[13px] uppercase tracking-[0.05em] hover:bg-accent/90 transition-all duration-300 shadow-[0_0_15px_rgba(217,35,35,0.2)] hover:shadow-[0_0_25px_rgba(217,35,35,0.4)] border border-accent/20"
+        >
+          Dashboard
+        </Link>
       </div>
       
       {/* Mobile Menu Icon */}
