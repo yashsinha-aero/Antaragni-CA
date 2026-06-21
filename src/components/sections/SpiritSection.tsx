@@ -7,12 +7,14 @@ import { BodyText } from "../ui/BodyText";
 import { MetadataLabel } from "../ui/MetadataLabel";
 import { StatisticBlock } from "../ui/StatisticBlock";
 import { GridContainer } from "../layout/GridContainer";
-import { fadeUp, fadeIn, staggerContainer, revealMaskBottom, scrollReveal, EASING } from "@/lib/animations";
+import { fadeUp, fadeIn, staggerContainer, revealMaskBottom, scrollReveal, lineDraw, EASING } from "@/lib/animations";
 import { assets } from "@/lib/assets";
 
 export function SpiritSection() {
   return (
     <section id="about" className="relative w-full flex flex-col py-24 md:py-32 overflow-hidden border-t border-white/5">
+      {/* Film grain texture */}
+      <div className="grain-overlay" />
       <GridContainer className="items-start">
         
         {/* Left Side: Typography & Legacy Copy */}
@@ -39,7 +41,10 @@ export function SpiritSection() {
             </BodyText>
           </motion.div>
 
-          <motion.hr variants={fadeUp} className="w-16 border-t border-accent mb-8" />
+          <motion.div
+            variants={lineDraw}
+            className="w-16 h-[1px] bg-accent mb-8 origin-left"
+          />
           
           <motion.div variants={fadeUp}>
             <MetadataLabel color="red">
@@ -81,7 +86,7 @@ export function SpiritSection() {
       {/* Bottom Row: Statistics */}
       <div className="w-full max-w-[1440px] mx-auto px-6 md:px-10 lg:px-20 mt-32">
         <motion.div 
-          className="w-full grid grid-cols-2 md:grid-cols-5 border-t border-b border-white/5 py-12 md:py-16 gap-y-12 relative"
+          className="w-full grid grid-cols-2 md:grid-cols-5 border-t border-b border-white/5 py-12 md:py-16 gap-y-12 relative overflow-hidden"
           variants={staggerContainer}
           initial="hidden"
           whileInView="visible"

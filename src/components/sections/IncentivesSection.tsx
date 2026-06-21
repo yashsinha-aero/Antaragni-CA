@@ -1,10 +1,14 @@
 "use client";
 
 import { useRef, useEffect } from "react";
+import { motion } from "framer-motion";
 import { EditorialHeading } from "../ui/EditorialHeading";
 import { assets } from "@/lib/assets";
 import { VisualEditor } from "../editor/VisualEditor";
 import { EditableElement } from "../editor/EditableElement";
+import { scrollReveal } from "@/lib/animations";
+
+const TAGLINES = ["RECOGNITION.", "EXPERIENCE.", "GROWTH.", "LEGACY."];
 
 export function IncentivesSection() {
   const spotlightRef = useRef<HTMLDivElement>(null);
@@ -24,7 +28,7 @@ export function IncentivesSection() {
       if (spotlightRef.current) {
         const halfW = window.innerWidth / 2;
         const targetOffsetX = mouseX - halfW;
-        currentOffsetX += (targetOffsetX - currentOffsetX) * 0.14;
+        currentOffsetX += (targetOffsetX - currentOffsetX) * 0.12;
         spotlightRef.current.style.transform = `translateX(${currentOffsetX}px)`;
       }
       requestRef = requestAnimationFrame(tick);
@@ -38,11 +42,7 @@ export function IncentivesSection() {
     if (stageAreaRef.current) {
       const items = stageAreaRef.current.querySelectorAll('.item-column') as NodeListOf<HTMLElement>;
       items.forEach((item, i) => {
-        // Only set the transition delay per-item; the starting state (opacity:0, translateY(55px))
-        // and ending state (opacity:1, translateY(0)) are defined entirely in CSS.
-        item.style.transitionDelay = `${0.55 + i * 0.14}s`;
-
-        // Double rAF ensures the browser has painted the initial hidden state before we flip
+        item.style.transitionDelay = `${0.45 + i * 0.13}s`;
         requestAnimationFrame(() => requestAnimationFrame(() => {
           item.classList.add('is-visible');
         }));
@@ -57,45 +57,63 @@ export function IncentivesSection() {
 
   return (
     <VisualEditor>
-      {/*
-        FIX 1: min-h-screen instead of min-h-[90vh] so the section fills the viewport.
-        pb-12 kept for label breathing room at the bottom.
-      */}
-      <section id="incentives" className="relative w-full flex flex-col pt-16 md:pt-24 pb-12 overflow-hidden border-t border-white/5 bg-[#050505] min-h-screen">
+      <section
+        id="incentives"
+        className="relative w-full flex flex-col pt-16 md:pt-24 pb-12 overflow-hidden border-t border-white/5 bg-[#050505] min-h-screen"
+      >
+        {/* Base BG */}
         <div className="absolute inset-0 bg-[#050505] -z-10" />
 
+        {/* Moving Spotlight */}
         <EditableElement id="spotlight" className="absolute inset-0 z-5 pointer-events-none">
           <div ref={spotlightRef} className="spotlight-overlay" />
         </EditableElement>
 
-        {/*
-          FIX 2: min-h-0 added to this flex column container.
-          Without it, flex children with flex:1 can't actually grow to fill the available
-          space — the container itself would size to its content instead of stretching.
-        */}
         <div className="w-full max-w-[1440px] mx-auto px-6 md:px-10 lg:px-16 flex flex-col flex-1 min-h-0 relative z-10">
 
-          {/*
-            Title block: shrink-0 on BOTH the outer wrapper div AND the EditableElement
-            so the flex column never squeezes the heading into the stage area.
-            The EditableElement injects its own div — without shrink-0 on that wrapper
-            the stage-wrapper's mt-auto can push upward and overlap the taglines.
-          */}
-          <div className="flex-shrink-0">
-            <EditableElement id="title" className="flex flex-col items-start mb-6 md:mb-12 relative z-10">
-              <EditorialHeading variant="section" className="text-foreground mb-4 md:mb-6">
-                INCENTIVES
-              </EditorialHeading>
+          {/* ── HEADER ROW: Title + Taglines side-by-side ─────────────────── */}
+          <EditableElement id="title" className="flex-shrink-0">
+            <div className="incentives-header">
 
-              <EditableElement id="taglines" className="flex flex-col gap-1 text-accent tracking-[0.2em] text-[13px] md:text-[15px] font-medium">
-                <span>RECOGNITION.</span>
-                <span>EXPERIENCE.</span>
-                <span>GROWTH.</span>
-                <span>LEGACY.</span>
-              </EditableElement>
-            </EditableElement>
-          </div>
+              {/* Left: Big Heading */}
+              <motion.div
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 1.1, ease: [0.16, 1, 0.3, 1] }}
+              >
+                <EditorialHeading variant="section" className="text-foreground leading-none">
+                  INCENTIVES
+                </EditorialHeading>
+              </motion.div>
 
+              {/* Right: Taglines in a horizontal row */}
+              <motion.div
+                className="incentives-taglines"
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 1.1, delay: 0.25, ease: [0.16, 1, 0.3, 1] }}
+              >
+                {TAGLINES.map((tag, i) => (
+                  <motion.span
+                    key={tag}
+                    className="incentives-tagline-item"
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{
+                      duration: 0.8,
+                      delay: 0.4 + i * 0.1,
+                      ease: [0.16, 1, 0.3, 1],
+                    }}
+                  >
+                    {tag}
+                  </motion.span>
+                ))}
+              </motion.div>
+
+            </div>
+          </EditableElement>
+
+          {/* ── STAGE ─────────────────────────────────────────────────────── */}
           <div className="stage-wrapper mt-auto">
             <div className="stage-container">
 
@@ -111,14 +129,7 @@ export function IncentivesSection() {
 
                 {/* 01: Certificate */}
                 <div className="item-column">
-                  {/*
-                    FIX 3: item-img-wrap is now a DIRECT child of .item-column.
-                    CSS rule: position:absolute; bottom:100% anchors relative to .item-column.
-                    Previously EditableElement injected a wrapper div here, breaking that anchor —
-                    the image would position relative to the wrapper instead of the column.
-                    EditableElement now wraps only the <img> inside item-img-wrap.
-                  */}
-                  <div className="item-img-wrap">
+                  <div className="item-img-wrap" style={{ transform: "translateX(-20%)" }}>
                     <EditableElement id="certificate-image">
                       <img
                         src={assets.incentives.certificate}
@@ -136,7 +147,7 @@ export function IncentivesSection() {
 
                 {/* 02: Pronite Pass */}
                 <div className="item-column">
-                  <div className="item-img-wrap">
+                  <div className="item-img-wrap" style={{ transform: "translateX(-9%)" }}>
                     <EditableElement id="pass-image">
                       <img
                         src={assets.incentives.pass}
@@ -191,6 +202,7 @@ export function IncentivesSection() {
               </div>
             </div>
           </div>
+
         </div>
       </section>
     </VisualEditor>

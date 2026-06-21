@@ -49,6 +49,10 @@ export function FinalCtaSection() {
       viewport={{ once: true, amount: 0.3 }}
       className="relative w-full min-h-screen flex flex-col justify-center items-center overflow-hidden bg-black border-t border-white/5"
     >
+      {/* Scan line sweep */}
+      <div className="scan-line" />
+      {/* Film grain */}
+      <div className="grain-overlay" />
       {/* Background & Atmospheric Effects */}
       <div className="absolute inset-0 z-0 pointer-events-none">
         
@@ -136,11 +140,18 @@ export function FinalCtaSection() {
             variants={fadeUpVariant}
             className="col-span-1 flex justify-center order-1 md:order-2 w-full mb-8 md:mb-0"
           >
-            <button className="group relative border border-accent/40 bg-black/20 backdrop-blur-sm px-10 py-4 lg:px-14 lg:py-5 transition-all duration-500 ease-out hover:border-accent hover:bg-accent/20 active:scale-[0.98]">
-              <span className="relative z-10 text-white text-[10px] md:text-[11px] lg:text-xs tracking-[0.3em] font-medium uppercase">
+            <motion.button
+              className="btn-glow group relative border border-accent/40 bg-black/20 backdrop-blur-sm px-10 py-4 lg:px-14 lg:py-5 transition-all duration-500 ease-out hover:border-accent hover:bg-accent/10 active:scale-[0.98]"
+              whileHover={{ scale: 1.04 }}
+              whileTap={{ scale: 0.97 }}
+              transition={{ type: "spring", stiffness: 400, damping: 20 }}
+            >
+              {/* Inner glow on hover */}
+              <span className="absolute inset-0 rounded-[inherit] opacity-0 group-hover:opacity-100 transition-opacity duration-500" style={{ background: 'radial-gradient(ellipse 70% 50% at 50% 100%, rgba(217,35,35,0.15), transparent)' }} />
+              <span className="relative z-10 text-white text-[10px] md:text-[11px] lg:text-xs tracking-[0.35em] font-medium uppercase transition-all duration-300 group-hover:tracking-[0.42em]">
                 APPLY NOW
               </span>
-            </button>
+            </motion.button>
           </motion.div>
 
           {/* Bottom Right Copy (5th) */}
