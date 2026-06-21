@@ -2,6 +2,7 @@
 
 import { motion, useScroll, useTransform } from "framer-motion";
 import Image from "next/image";
+import Link from "next/link";
 import { EditorialHeading } from "../ui/EditorialHeading";
 import { EditorialSubheading } from "../ui/EditorialSubheading";
 import { VerticalLabel } from "../ui/VerticalLabel";
@@ -110,6 +111,29 @@ export function HeroSection() {
             transition={{ duration: 1.4, delay: 1.0, ease: EASING }}
             className="w-12 h-[1px] bg-accent mt-8 origin-left"
           />
+
+          {/* Apply Now CTA */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 1.2, ease: EASING }}
+            className="mt-10"
+          >
+            <Link href="/dashboard" className="inline-block">
+              <motion.button
+                className="btn-glow group relative border border-accent/40 bg-black/20 backdrop-blur-sm px-10 py-4 lg:px-14 lg:py-5 transition-all duration-500 ease-out hover:border-accent hover:bg-accent/10 active:scale-[0.98]"
+                whileHover={{ scale: 1.04 }}
+                whileTap={{ scale: 0.97 }}
+                transition={{ type: "spring", stiffness: 400, damping: 20 }}
+              >
+                {/* Inner glow on hover */}
+                <span className="absolute inset-0 rounded-[inherit] opacity-0 group-hover:opacity-100 transition-opacity duration-500" style={{ background: 'radial-gradient(ellipse 70% 50% at 50% 100%, rgba(217,35,35,0.15), transparent)' }} />
+                <span className="relative z-10 text-white text-[10px] md:text-[11px] lg:text-xs tracking-[0.35em] font-medium uppercase transition-all duration-300 group-hover:tracking-[0.42em]">
+                  APPLY NOW
+                </span>
+              </motion.button>
+            </Link>
+          </motion.div>
         </div>
 
         {/* Right Side: Stats */}

@@ -8,6 +8,7 @@ import { ProfileTab } from "./ProfileTab";
 import { LeaderboardTab } from "./LeaderboardTab";
 import { TasksTab } from "./TasksTab";
 import { PlaceholderTab } from "./PlaceholderTab";
+import { IdeasTab } from "./IdeasTab";
 
 type TabId = "PROFILE" | "LEADERBOARD" | "TASKS" | "IDEAS";
 
@@ -75,6 +76,8 @@ export function DashboardPage() {
           <LeaderboardTab data={mockLeaderboardData} />
         ) : activeTab === "TASKS" ? (
           <TasksTab data={mockTasksData} />
+        ) : activeTab === "IDEAS" ? (
+          <IdeasTab />
         ) : (
           <PlaceholderTab tabName={activeTab} key={activeTab} />
         )}
