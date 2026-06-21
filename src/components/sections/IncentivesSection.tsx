@@ -59,7 +59,7 @@ export function IncentivesSection() {
     <VisualEditor>
       <section
         id="incentives"
-        className="relative w-full flex flex-col pt-16 md:pt-24 pb-12 overflow-hidden border-t border-white/5 bg-[#050505] min-h-screen"
+        className="relative w-full flex flex-col pt-4 md:pt-6 pb-12 overflow-hidden border-t border-white/5 bg-[#050505] min-h-screen"
       >
         {/* Base BG */}
         <div className="absolute inset-0 bg-[#050505] -z-10" />

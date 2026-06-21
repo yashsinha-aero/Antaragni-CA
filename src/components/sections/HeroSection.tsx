@@ -143,7 +143,11 @@ export function HeroSection() {
           <div className="absolute inset-0 flex items-center justify-center opacity-40 pointer-events-none -z-10 -ml-20 mt-10">
             <motion.div
               className="relative w-[460px] h-[920px]"
-              style={{ y: archY }}
+              style={{
+                y: archY,
+                maskImage: "radial-gradient(ellipse at center, black 35%, transparent 85%)",
+                WebkitMaskImage: "radial-gradient(ellipse at center, black 35%, transparent 85%)",
+              }}
               initial={{ opacity: 0, scale: 0.97 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 2, ease: EASING }}

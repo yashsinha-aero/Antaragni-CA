@@ -3,6 +3,8 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
+import Image from "next/image";
+import { usePathname } from "next/navigation";
 import { NavigationLink } from "../ui/NavigationLink";
 
 const LINKS = [
@@ -10,14 +12,15 @@ const LINKS = [
   { label: "About", href: "#about" },
   { label: "Benefits", href: "#incentives" },
   { label: "Roles", href: "#roles" },
-  { label: "Sponsors", href: "#sponsors" },
   { label: "FAQ", href: "#faq" },
+  { label: "Sponsors", href: "#sponsors" },
   { label: "Contact", href: "#contact" },
 ];
 
 export function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const pathname = usePathname();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40);
@@ -26,11 +29,13 @@ export function Navbar() {
   }, []);
 
   const handleScroll = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
-    e.preventDefault();
     setMobileOpen(false);
-    const targetId = href.replace(/.*#/, "");
-    const elem = document.getElementById(targetId);
-    if (elem) elem.scrollIntoView({ behavior: "smooth" });
+    if (pathname === "/") {
+      e.preventDefault();
+      const targetId = href.replace(/.*#/, "");
+      const elem = document.getElementById(targetId);
+      if (elem) elem.scrollIntoView({ behavior: "smooth" });
+    }
   };
 
   return (
@@ -59,13 +64,17 @@ export function Navbar() {
 
             {/* Logo */}
             <a
-              href="#home"
+              href={pathname === "/" ? "#home" : "/"}
               onClick={(e) => handleScroll(e, "#home")}
-              className="block w-9 h-11 flex items-center justify-center cursor-pointer group"
+              className="block relative w-9 h-11 cursor-pointer group"
             >
-              <svg viewBox="0 0 40 48" fill="none" className="w-full h-full text-accent transition-all duration-300 group-hover:drop-shadow-[0_0_8px_rgba(217,35,35,0.8)]">
-                <path d="M20 0 L40 48 L25 48 L20 30 L15 48 L0 48 Z" fill="currentColor" />
-              </svg>
+              <Image
+                src="/assets/logo.png"
+                alt="Antaragni Logo"
+                fill
+                className="object-contain transition-all duration-300 group-hover:drop-shadow-[0_0_8px_rgba(217,35,35,0.8)]"
+                priority
+              />
             </a>
 
             {/* Desktop Links */}
@@ -78,7 +87,7 @@ export function Navbar() {
                   transition={{ duration: 0.6, delay: 0.08 * i, ease: [0.16, 1, 0.3, 1] }}
                 >
                   <NavigationLink
-                    href={link.href}
+                    href={pathname === "/" ? link.href : `/${link.href}`}
                     onClick={(e) => handleScroll(e, link.href)}
                   >
                     {link.label}
@@ -93,10 +102,8 @@ export function Navbar() {
               >
                 <Link
                   href="/dashboard"
-                  className="relative overflow-hidden bg-accent text-white px-5 py-2 font-sans font-medium text-[12px] uppercase tracking-[0.08em] hover:bg-accent/90 transition-all duration-300 shadow-[0_0_18px_rgba(217,35,35,0.25)] hover:shadow-[0_0_30px_rgba(217,35,35,0.5)] group"
+                  className="relative overflow-hidden bg-accent text-white px-6 py-2.5 rounded-full font-sans font-medium text-[12px] uppercase tracking-[0.08em] hover:bg-red-600 hover:scale-105 active:scale-95 transition-all duration-300 shadow-[0_0_18px_rgba(217,35,35,0.25)] hover:shadow-[0_0_30px_rgba(217,35,35,0.5)] group"
                 >
-                  {/* Shimmer sweep on hover */}
-                  <span className="absolute inset-0 -translate-x-full group-hover:translate-x-full bg-gradient-to-r from-transparent via-white/20 to-transparent transition-transform duration-700 ease-out" />
                   <span className="relative z-10">Dashboard</span>
                 </Link>
               </motion.div>
@@ -148,7 +155,7 @@ export function Navbar() {
               {LINKS.map((link, i) => (
                 <motion.a
                   key={link.label}
-                  href={link.href}
+                  href={pathname === "/" ? link.href : `/${link.href}`}
                   onClick={(e) => handleScroll(e, link.href)}
                   className="text-white/70 hover:text-white text-[13px] font-sans font-medium uppercase tracking-[0.2em] transition-colors duration-200 border-b border-white/5 pb-8 last:border-0 last:pb-0"
                   initial={{ opacity: 0, x: -20 }}
@@ -167,7 +174,7 @@ export function Navbar() {
               >
                 <Link
                   href="/dashboard"
-                  className="mt-4 w-full flex items-center justify-center bg-accent text-white py-3 font-sans font-medium text-[12px] uppercase tracking-[0.12em]"
+                  className="mt-4 w-full flex items-center justify-center bg-accent hover:bg-red-600 text-white py-3 rounded-full font-sans font-medium text-[12px] uppercase tracking-[0.12em] transition-colors duration-300"
                   onClick={() => setMobileOpen(false)}
                 >
                   Dashboard
