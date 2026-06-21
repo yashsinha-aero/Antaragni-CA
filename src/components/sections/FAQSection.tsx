@@ -159,7 +159,7 @@ const faqData = [
 ];
 
 export function FAQSection() {
-  const [expandedId, setExpandedId] = useState<string>("03");
+  const [expandedId, setExpandedId] = useState<string>("");
 
   const toggleExpand = (id: string) => {
     setExpandedId((prev) => (prev === id ? "" : id));
