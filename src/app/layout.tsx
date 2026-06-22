@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
+import { Navbar } from "@/components/layout/Navbar";
 
 const helveticaNeue = localFont({
   src: [
@@ -41,6 +42,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${helveticaNeue.variable} ${bodoniModa.variable} font-sans bg-background text-foreground antialiased`}>
+        <Navbar />
         {children}
       </body>
     </html>

@@ -8,18 +8,81 @@ import { cn } from "@/lib/utils";
 import Image from "next/image";
 import { assets } from "@/lib/assets";
 
+interface SubFAQProps {
+  qNumber: string;
+  question: string;
+  answer: string;
+}
+
+const SubFAQItem = ({ qNumber, question, answer }: SubFAQProps) => (
+  <div className="flex flex-col md:flex-row gap-6 md:gap-12 w-full">
+    <div className="flex-1 flex flex-col gap-4">
+      <span className="text-accent text-[12px] font-sans font-bold">{qNumber}</span>
+      <h4 className="text-[18px] md:text-[22px] font-sans font-medium text-foreground pr-8">
+        {question}
+      </h4>
+    </div>
+    <div className="hidden md:block w-[1px] bg-white/10" />
+    <div className="flex-[1.5] flex items-center">
+      <p className="text-muted text-[13px] md:text-[15px] leading-[1.8] font-sans">
+        {answer}
+      </p>
+    </div>
+  </div>
+);
+
 const faqData = [
   {
     id: "01",
     title: "APPLICATION",
     description: "Everything you need to know about applying to the Antaragni Campus Ambassador Program.",
-    content: null,
+    content: (
+      <div className="flex flex-col gap-12 mt-12 mb-8">
+        <SubFAQItem 
+          qNumber="Q1"
+          question="What is the Campus Ambassador Program?"
+          answer="The Campus Ambassador Program is a student-driven initiative where selected ambassadors promote our brand, organize events, and provide feedback from their respective campuses. This program aims to create a strong community and enhance brand awareness among students."
+        />
+        <div className="w-full h-[1px] bg-white/10" />
+        <SubFAQItem 
+          qNumber="Q2"
+          question="Who can apply for the Campus Ambassador Program?"
+          answer="Any currently enrolled university or college student with good communication skills, an active social media presence, and a passion for Antaragni can apply."
+        />
+        <div className="w-full h-[1px] bg-white/10" />
+        <SubFAQItem 
+          qNumber="Q3"
+          question="How do I apply for the program?"
+          answer="You can apply by registering on our website. The application process requires just submitting your details."
+        />
+        <div className="w-full h-[1px] bg-white/10" />
+        <SubFAQItem 
+          qNumber="Q4"
+          question="Can I apply if my university is not listed?"
+          answer="Yes, you can still apply. We welcome applications from students from all universities and colleges."
+        />
+      </div>
+    ),
   },
   {
     id: "02",
     title: "SELECTION",
     description: "Understand our selection process and what we look for in an ambassador.",
-    content: null,
+    content: (
+      <div className="flex flex-col gap-12 mt-12 mb-8">
+        <SubFAQItem 
+          qNumber="Q1"
+          question="How will I know if I am selected?"
+          answer="Once registered on the portal, you can start doing the task and join the Antaragni Outreach Team."
+        />
+        <div className="w-full h-[1px] bg-white/10" />
+        <SubFAQItem 
+          qNumber="Q2"
+          question="How long does the program last?"
+          answer="The Campus Ambassador Program typically lasts for 6 months, with the possibility of extension based on performance and mutual interest."
+        />
+      </div>
+    ),
   },
   {
     id: "03",
@@ -27,41 +90,23 @@ const faqData = [
     description: "What will you do as an ambassador? Roles, tasks and expectations.",
     content: (
       <div className="flex flex-col gap-12 mt-12 mb-8">
-        <div className="flex flex-col md:flex-row gap-6 md:gap-12 w-full">
-          {/* Q1 */}
-          <div className="flex-1 flex flex-col gap-4">
-            <span className="text-accent text-[12px] font-sans font-bold">Q1</span>
-            <h4 className="text-[18px] md:text-[22px] font-sans font-medium text-foreground pr-8">
-              What are the core responsibilities?
-            </h4>
-          </div>
-          {/* Vertical Divider (Desktop) / Horizontal (Mobile handled by flex layout naturally if we don't add borders, let's add border to left on desktop) */}
-          <div className="hidden md:block w-[1px] bg-white/10" />
-          <div className="flex-[1.5] flex items-center">
-            <p className="text-muted text-[13px] md:text-[15px] leading-[1.8] font-sans">
-              Ambassadors act as cultural leaders on campus. You will promote Antaragni, build engagement, coordinate activities, and represent the festival with passion and responsibility.
-            </p>
-          </div>
-        </div>
-        
-        {/* Horizontal Divider */}
+        <SubFAQItem 
+          qNumber="Q1"
+          question="What are the responsibilities of a Campus Ambassador?"
+          answer="Campus Ambassadors promote Antaragni, organize events, provide feedback, create content, and network with other students to enhance engagement and awareness."
+        />
         <div className="w-full h-[1px] bg-white/10" />
-
-        <div className="flex flex-col md:flex-row gap-6 md:gap-12 w-full">
-          {/* Q2 */}
-          <div className="flex-1 flex flex-col gap-4">
-            <span className="text-accent text-[12px] font-sans font-bold">Q2</span>
-            <h4 className="text-[18px] md:text-[22px] font-sans font-medium text-foreground pr-8">
-              How much time is required?
-            </h4>
-          </div>
-          <div className="hidden md:block w-[1px] bg-white/10" />
-          <div className="flex-[1.5] flex items-center">
-            <p className="text-muted text-[13px] md:text-[15px] leading-[1.8] font-sans">
-              The program is flexible and designed to fit around your academics. You are expected to dedicate consistent time, especially closer to festival season.
-            </p>
-          </div>
-        </div>
+        <SubFAQItem 
+          qNumber="Q2"
+          question="What kind of events am I expected to organize?"
+          answer="Events can include workshops, seminars, webinars, social gatherings, and promotional activities tailored to your campus's interests and needs."
+        />
+        <div className="w-full h-[1px] bg-white/10" />
+        <SubFAQItem 
+          qNumber="Q3"
+          question="What happens if I cannot fulfill my duties?"
+          answer="If you need help in fulfilling your duties, please contact our team as soon as possible. We understand that academic commitments are a priority and can discuss possible solutions or adjustments to your responsibilities."
+        />
       </div>
     ),
   },
@@ -69,18 +114,52 @@ const faqData = [
     id: "04",
     title: "BENEFITS",
     description: "Discover the perks, learning opportunities and experiences you will gain.",
-    content: null,
+    content: (
+      <div className="flex flex-col gap-12 mt-12 mb-8">
+        <SubFAQItem 
+          qNumber="Q1"
+          question="What benefits do Campus Ambassadors receive?"
+          answer="Ambassadors gain professional development experience, exclusive access to products and events, mentorship, networking opportunities, certificates of recognition, and various incentives like merchandise and gift cards."
+        />
+        <div className="w-full h-[1px] bg-white/10" />
+        <SubFAQItem 
+          qNumber="Q2"
+          question="How is the points system structured?"
+          answer="The points system, 'Engagement Tokens,' rewards ambassadors for their activities and contributions. Points can be earned through various tasks such as event organization, social media promotion, and content creation."
+        />
+        <div className="w-full h-[1px] bg-white/10" />
+        <SubFAQItem 
+          qNumber="Q3"
+          question="What is the level system in the program?"
+          answer="The level system, referred to as 'Achievement Tiers,' signifies the progression of ambassadors based on their points and contributions. It ranges from initial stages like 'Ambassador Apprentice' to advanced stages like 'Ambassador Legend.'"
+        />
+      </div>
+    ),
   },
   {
     id: "05",
     title: "EVENTS",
     description: "Learn about Antaragni and the scale of experiences you will be a part of.",
-    content: null,
+    content: (
+      <div className="flex flex-col gap-12 mt-12 mb-8">
+        <SubFAQItem 
+          qNumber="Q1"
+          question="How do I track my progress and points?"
+          answer="You can track your progress by Leaderboard and Dashboard through our website, where all activities and points are logged and updated."
+        />
+        <div className="w-full h-[1px] bg-white/10" />
+        <SubFAQItem 
+          qNumber="Q2"
+          question="What support will I receive as a Campus Ambassador?"
+          answer="You will receive guidance and a Roadmap from our team."
+        />
+      </div>
+    ),
   },
 ];
 
 export function FAQSection() {
-  const [expandedId, setExpandedId] = useState<string>("03");
+  const [expandedId, setExpandedId] = useState<string>("");
 
   const toggleExpand = (id: string) => {
     setExpandedId((prev) => (prev === id ? "" : id));
@@ -183,8 +262,9 @@ export function FAQSection() {
                       {item.description}
                     </p>
                     
+                    {/* ADJUSTED SIZE: Shifted down to a well-balanced text-[42px] inside a tight w-12 h-12 block */}
                     <motion.div 
-                      className="text-white text-[24px] font-light flex items-center justify-center w-8 h-8 opacity-60 group-hover:opacity-100"
+                      className="text-white text-[42px] font-light flex items-center justify-center w-12 h-12 opacity-60 group-hover:opacity-100 transition-all duration-300"
                       animate={{ rotate: isExpanded ? 180 : 0 }}
                       transition={{ type: "spring", stiffness: 200, damping: 20 }}
                     >
